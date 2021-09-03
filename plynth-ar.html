@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@0.3.1/dist/mindar.prod.js"></script>
+    <script>
+      AFRAME.registerComponent('play-on-click', {
+        init: function () {
+          this.onClick = this.onClick.bind(this);
+        },
+        play: function () {
+          window.addEventListener('click', this.onClick);
+        },
+        pause: function () {
+          window.removeEventListener('click', this.onClick);
+        },
+        onClick: function (evt) {
+          var videoEl = this.el.getAttribute('material').src;
+          if (!videoEl) { return; }
+          this.el.object3D.visible = true;
+          videoEl.play();
+        }
+      })
+    </script>
+  </head>
+  <body>
+    <a-scene mindar="imageTargetSrc: https://plynth-barebones.s3.us-east-2.amazonaws.com/jan-pcmt-targets.mind; showStats: true;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <video id="card" src="https://plynth-barebones.s3.us-east-2.amazonaws.com/final_61325e65bbd27600641ad232_484125.mp4" preload="auto" autoplay controls muted crossorigin="anonymous" loop="true"  playsinline webkit-playsinline onclick="this.play()"></video>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-video play-on-click src="#card" width="1" height="1.5" position="0 0 0" rotation="0 0 0"></a-video>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
+
+<script>
+  var isPlaying = false; 
+  if (isPlaying) {
+    // Do pause.
+    isPlaying = false;
+  } else {
+    // Do play.
+    isPlaying = true;
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    var video = document.querySelector('#meinVideo');
+    var start = document.querySelector('#start');
+    var stop = document.querySelector('#stop');
+    // Pause
+    //video.pause();
+    // Video
+    start.addEventListener('click', function () {
+        video.play();
+    })
+    stop.addEventListener('click', function () {
+        video.pause();
+    })
+})
+		</script>
